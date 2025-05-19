@@ -1,0 +1,24 @@
+PROG2                                                                                                         PAGE 1
+
+                       1    $MOD51 ; Include MK-51 microcontroller
+0000                   2    org 00h ; Start program at address 00h
+0000 900000            3    mov dptr,#00h ; Load 00h into the pointer register
+0003 7AFF              4    mov r2,#0ffh ; Load 0ffh into register R2 (loop counter)
+0005 7955              5    mov r1,#055h ; Load 55h into register R1
+0007                   6    test:
+0007 E9                7    mov a,r1 ; Load accumulator ACC with operand from register R1
+0008 F0                8    movx @dptr,a ; Transfer the contents of accumulator ACC to XRAM external memory cell
+0009 E0                9    movx a,@dptr ; Read into accumulator the contents of current external memory cell
+000A 6455             10    xrl a,#055h ; XOR operation between read and original operand, if 0 in ACC, then cell works 
+                                                                               correctly
+000C 7003             11    jnz error ; Error - exit program
+000E A3               12    inc dptr ; Increment contents of DPTR register - move to next address
+000F DAF6             13    djnz r2,test ; Subtract 1 from contents of register R2 and jump to label if not 0
+0011                  14    error:
+                      15    END
+
+VERSION 1.2k ASSEMBLY COMPLETE, 0 ERRORS FOUND
+PROG2                                                                                                         PAGE 2
+
+ERROR. . . . . . . . . . . . . .  C ADDR  0011H  
+TEST . . . . . . . . . . . . . .  C ADDR  0007H  
