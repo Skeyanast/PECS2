@@ -1,0 +1,116 @@
+PROG                                                                                                          PAGE 1
+
+                       1    $MOD51   ; Include 8051 SFR definitions
+                       2    
+                       3    ; Time constants (for 12 MHz clock)
+  0007                 4    S_TIME EQU 7    ; LED ON time (seconds)
+  0006                 5    K_TIME EQU 6    ; LED OFF time (seconds)
+  000F                 6    T_MIN  EQU 15   ; Total duration (minutes)
+                       7    
+                       8    ; Timer value for 50ms interrupt (12 MHz clock)
+                       9    ; Calculation: 65536 - (50000 ? 12)/12 = 15536
+  3CB0                10    TIMER_VAL EQU 15536 
+                      11    
+                      12    ; Reset and interrupt vectors
+0000                  13    org 00h
+0000 020030           14        jmp start       ; Jump to main program
+                      15    
+000B                  16    org 0Bh            ; Timer 0 interrupt vector
+000B 020048           17        ljmp timer_isr  ; Jump to interrupt handler
+                      18    
+                      19    ; Main program starts at 30h to avoid overlap with interrupt vector
+0030                  20    org 30h
+0030                  21    start:
+                      22        ; Timer initialization
+0030 758901           23        mov tmod, #01h   ; Set Timer 0 to mode 1 (16-bit timer)
+                      24        
+                      25        ; LED initialization (connected to P3.3)
+0033 75B000           26        mov p3, #00h     ; Clear all P3 pins
+0036 D2B3             27        setb p3.3        ; Turn LED off (active low logic)
+                      28        
+                      29        ; Initialize counters
+0038 7800             30        mov r0, #0       ; 50ms interval counter
+003A 7907             31        mov r1, #S_TIME  ; ON time counter (7 seconds)
+003C 7A06             32        mov r2, #K_TIME  ; OFF time counter (6 seconds)
+003E 7B0F             33        mov r3, #T_MIN   ; Total duration counter (15 minutes)
+                      34        
+                      35        ; Interrupt configuration
+0040 D2AF             36        setb ea          ; Enable global interrupts
+0042 D2A9             37        setb et0         ; Enable Timer 0 interrupt
+0044 D28C             38        setb tr0         ; Start Timer 0
+                      39        
+                      40    ; Main infinite loop (all logic handled in interrupts)
+0046                  41    main_loop:
+0046 80FE             42        sjmp main_loop   ; Wait indefinitely
+                      43    
+                      44    ; Timer 0 interrupt service routine
+0048                  45    timer_isr:
+0048 C28C             46        clr tr0          ; Stop timer temporarily
+                      47        
+                      48        ; Reload timer value for 50ms
+004A 758AB0           49        mov tl0, #low(TIMER_VAL)
+004D 758C3C           50        mov th0, #high(TIMER_VAL)
+                      51        
+0050 D28C             52        setb tr0         ; Restart timer
+                      53        
+0052 08               54        inc r0           ; Increment 50ms counter
+0053 B8141B           55        cjne r0, #20, exit_isr  ; Check if 1 second passed (20?50ms)
+                      56        
+                      57        ; 1 second has elapsed
+0056 7800             58        mov r0, #0       ; Reset 50ms counter
+PROG                                                                                                          PAGE 2
+
+                      59        
+                      60        ; Check current LED state
+0058 20B308           61        jb p3.3, led_off ; Jump if LED is currently OFF
+                      62        
+                      63    ; LED is ON - handle ON duration
+005B                  64    led_on:
+005B D914             65        djnz r1, exit_isr ; Decrement ON counter, exit if not zero
+                      66        
+                      67        ; 7 seconds ON time completed
+005D D2B3             68        setb p3.3         ; Turn LED OFF
+005F 7907             69        mov r1, #S_TIME   ; Reset ON counter
+0061 800E             70        sjmp exit_isr
+                      71        
+                      72    ; LED is OFF - handle OFF duration    
+0063                  73    led_off:
+0063 DA0C             74        djnz r2, exit_isr ; Decrement OFF counter, exit if not zero
+                      75        
+                      76        ; 6 seconds OFF time completed
+0065 C2B3             77        clr p3.3          ; Turn LED ON
+0067 7A06             78        mov r2, #K_TIME   ; Reset OFF counter
+                      79        
+                      80        ; Check total duration
+0069 DB06             81        djnz r3, exit_isr ; Decrement minute counter, exit if not zero
+                      82        
+                      83        ; 15 minutes completed
+006B C2AF             84        clr ea            ; Disable all interrupts
+006D D2B3             85        setb p3.3         ; Ensure LED is OFF
+006F 80FE             86        sjmp $            ; Halt program (infinite loop)
+                      87    
+0071                  88    exit_isr:
+0071 32               89        reti              ; Return from interrupt
+                      90    
+                      91    END
+
+VERSION 1.2k ASSEMBLY COMPLETE, 0 ERRORS FOUND
+PROG                                                                                                          PAGE 3
+
+EA . . . . . . . . . . . . . . .  B ADDR  00AFH  PREDEFINED  
+ET0. . . . . . . . . . . . . . .  B ADDR  00A9H  PREDEFINED  
+EXIT_ISR . . . . . . . . . . . .  C ADDR  0071H  
+K_TIME . . . . . . . . . . . . .    NUMB  0006H  
+LED_OFF. . . . . . . . . . . . .  C ADDR  0063H  
+LED_ON . . . . . . . . . . . . .  C ADDR  005BH  NOT USED  
+MAIN_LOOP. . . . . . . . . . . .  C ADDR  0046H  
+P3 . . . . . . . . . . . . . . .  D ADDR  00B0H  PREDEFINED  
+START. . . . . . . . . . . . . .  C ADDR  0030H  
+S_TIME . . . . . . . . . . . . .    NUMB  0007H  
+TH0. . . . . . . . . . . . . . .  D ADDR  008CH  PREDEFINED  
+TIMER_ISR. . . . . . . . . . . .  C ADDR  0048H  
+TIMER_VAL. . . . . . . . . . . .    NUMB  3CB0H  
+TL0. . . . . . . . . . . . . . .  D ADDR  008AH  PREDEFINED  
+TMOD . . . . . . . . . . . . . .  D ADDR  0089H  PREDEFINED  
+TR0. . . . . . . . . . . . . . .  B ADDR  008CH  PREDEFINED  
+T_MIN. . . . . . . . . . . . . .    NUMB  000FH  
