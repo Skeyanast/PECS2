@@ -1,0 +1,48 @@
+MAIN                                                                                                          PAGE 1
+
+                       1    $MOD51  ; This includes 8051 definitions for the Metalink assembler
+                       2    
+0000                   3    ORG 00H
+0000 020006            4    JMP MAIN
+                       5    
+0003                   6    VAR:
+0003 D9                7        DB 217
+0004 3B                8        DB 59
+0005 90                9        DB 144
+                      10    
+0006                  11    MAIN:
+0006 75A000           12        MOV P2, #00H
+                      13        
+0009 7800             14        MOV R0, #0
+000B 900003           15        MOV DPTR, #VAR
+                      16    
+000E                  17    LOOP:
+000E E8               18        MOV A, R0
+000F 93               19        MOVC A, @A+DPTR
+0010 F5A0             20        MOV P2, A
+                      21        
+0012 79C8             22        MOV R1, #200
+0014                  23    DELAY_1:
+0014 7AFA             24        MOV R2, #250
+0016                  25    DELAY_2:
+0016 DAFE             26        DJNZ R2, DELAY_2
+0018 D9FA             27        DJNZ R1, DELAY_1
+                      28        
+001A 08               29        INC R0
+001B B803F0           30        CJNE R0, #3, LOOP
+                      31    
+001E                  32    ENDLESS:
+001E 80FE             33        SJMP ENDLESS
+                      34    
+                      35    END
+
+VERSION 1.2k ASSEMBLY COMPLETE, 0 ERRORS FOUND
+MAIN                                                                                                          PAGE 2
+
+DELAY_1. . . . . . . . . . . . .  C ADDR  0014H  
+DELAY_2. . . . . . . . . . . . .  C ADDR  0016H  
+ENDLESS. . . . . . . . . . . . .  C ADDR  001EH  
+LOOP . . . . . . . . . . . . . .  C ADDR  000EH  
+MAIN . . . . . . . . . . . . . .  C ADDR  0006H  
+P2 . . . . . . . . . . . . . . .  D ADDR  00A0H  PREDEFINED  
+VAR. . . . . . . . . . . . . . .  C ADDR  0003H  
