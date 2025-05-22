@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ASCII"?>
+<MCUProject Schema="67" Class="CMCUProject" Path="" PathAbs="" ProjectType="0">
+<ProjectFolders/>
+<ProjectFiles>
+<FileItem>
+<MCUFile Class="CMCUFile" Path="&amp;ASCprog5-2.asm" PathAbs="&amp;ASCC:\Users\Honor\Documents\National Instruments\Circuit Design Suite 14.1\MCU Workspaces\lab5\project5\project6\project5-2\prog5-2.asm" UseFileOptions="0" FileOptions=""/>
+</FileItem>
+</ProjectFiles>
+<BuildSettings>
+<MCUProjectBuildSettings Class="CMCUProjectBuildSettings" ToolGroupType="0" IntermediatePath="&amp;ASC..\..\project5-2\" IntermediatePathAbs="&amp;ASCC:\Users\Honor\Documents\National Instruments\Circuit Design Suite 14.1\MCU Workspaces\lab5\project5\project5-2\" OutputPath="&amp;ASC..\..\project5-2\" OutputPathAbs="&amp;ASCC:\Users\Honor\Documents\National Instruments\Circuit Design Suite 14.1\MCU Workspaces\lab5\project5\project5-2\" TargetFileType="6" SimPath="&amp;ASC.\" SimPathAbs="&amp;ASCC:\Users\Honor\Documents\National Instruments\Circuit Design Suite 14.1\MCU Workspaces\lab5\project5\project6\project5-2\" SimFile="&amp;ASCprog5-2.hex" CodeLoadType="0">
+<Assembler>
+<MCUToolSettings Class="CMCUToolSettings" ToolType="0" IntermediatePath="&amp;ASC.\" IntermediatePathAbs="&amp;ASCC:\Users\Honor\Documents\National Instruments\Circuit Design Suite 14.1\MCU Workspaces\lab5\project5\project6\project5-2\" OutputPath="&amp;ASC.\" OutputPathAbs="&amp;ASCC:\Users\Honor\Documents\National Instruments\Circuit Design Suite 14.1\MCU Workspaces\lab5\project5\project6\project5-2\" TargetType="6" IncludeOptions="&amp;ASC$MOD51" PreFilenameOptions="" PostFilenameOptions="">
+<MCULibraries/>
+</MCUToolSettings>
+</Assembler>
+</MCUProjectBuildSettings>
+</BuildSettings>
+</MCUProject>

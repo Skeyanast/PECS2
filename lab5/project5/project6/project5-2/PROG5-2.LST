@@ -1,0 +1,71 @@
+PROG5-2                                                                                                       PAGE 1
+
+                       1    $MOD51  ; This includes 8051 definitions for the Metalink assembler
+                       2    
+0000                   3    ORG 00H
+0000 02000D            4    JMP START
+                       5    
+                       6    
+0003                   7    SEG_TABLE:
+0003 C0F9A4B0          8        DB 0C0H, 0F9H, 0A4H, 0B0H, 99H, 92H, 82H, 0F8H, 80H, 90H
+0007 999282F8   
+000B 8090       
+                       9    
+                      10    
+  0023                11    A_BCD EQU 23H
+  0052                12    B_BCD EQU 52H
+                      13    
+000D                  14    START:
+000D 7423             15        MOV A, #A_BCD
+000F 2452             16        ADD A, #B_BCD
+0011 D4               17        DA A
+                      18        
+0012 75F010           19        MOV B, #10H
+0015 84               20        DIV AB
+0016 F8               21        MOV R0, A
+0017 A9F0             22        MOV R1, B
+                      23    
+0019                  24    MAIN_LOOP:
+                      25    
+0019 75A0FE           26        MOV P2, #11111110B
+001C E8               27        MOV A, R0
+001D 112B             28        ACALL DISPLAY_DIGIT
+001F 1132             29        ACALL DELAY
+                      30        
+0021 75A0FD           31        MOV P2, #11111101B
+0024 E9               32        MOV A, R1
+0025 112B             33        ACALL DISPLAY_DIGIT
+0027 1132             34        ACALL DELAY
+                      35        
+0029 80EE             36        JMP MAIN_LOOP
+                      37    
+002B                  38    DISPLAY_DIGIT:
+002B 900003           39        MOV DPTR, #SEG_TABLE
+002E 93               40        MOVC A, @A+DPTR
+002F F590             41        MOV P1, A
+0031 22               42        RET
+                      43    
+0032                  44    DELAY:
+0032 7B0A             45        MOV R3, #10
+0034                  46    DELAY_LOOP:
+0034 7CC8             47        MOV R4, #200
+0036 DCFE             48        DJNZ R4, $
+0038 DBFA             49        DJNZ R3, DELAY_LOOP
+003A 22               50        RET
+                      51    
+                      52    END
+
+VERSION 1.2k ASSEMBLY COMPLETE, 0 ERRORS FOUND
+PROG5-2                                                                                                       PAGE 2
+
+A_BCD. . . . . . . . . . . . . .    NUMB  0023H  
+B. . . . . . . . . . . . . . . .  D ADDR  00F0H  PREDEFINED  
+B_BCD. . . . . . . . . . . . . .    NUMB  0052H  
+DELAY. . . . . . . . . . . . . .  C ADDR  0032H  
+DELAY_LOOP . . . . . . . . . . .  C ADDR  0034H  
+DISPLAY_DIGIT. . . . . . . . . .  C ADDR  002BH  
+MAIN_LOOP. . . . . . . . . . . .  C ADDR  0019H  
+P1 . . . . . . . . . . . . . . .  D ADDR  0090H  PREDEFINED  
+P2 . . . . . . . . . . . . . . .  D ADDR  00A0H  PREDEFINED  
+SEG_TABLE. . . . . . . . . . . .  C ADDR  0003H  
+START. . . . . . . . . . . . . .  C ADDR  000DH  

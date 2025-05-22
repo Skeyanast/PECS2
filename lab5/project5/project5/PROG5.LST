@@ -1,0 +1,42 @@
+PROG5                                                                                                         PAGE 1
+
+                       1    $MOD51
+                       2    
+0020                   3    org 20h
+0020 7A09              4    mov r2, #9
+                       5    
+0022                   6    ind:
+0022 EA                7            mov a, r2
+0023 7BFF              8            mov r3,#255
+0025 900100            9            mov dptr,#zg
+0028 93               10            movc a,@a+dptr
+                      11    
+0029                  12    ind1:
+0029 F5A0             13            mov p2,a
+002B 00               14            nop
+002C 00               15            nop
+002D DBFA             16            djnz r3,ind1
+002F DAF1             17            djnz r2,ind
+0100                  18            org 0100h
+                      19    
+0100                  20    zg:
+0100 C0               21            db 11000000b
+0101 F9               22            db 11111001b
+0102 A4               23            db 10100100b
+0103 B0               24            db 10110000b
+0104 99               25            db 10011001b
+0105 92               26            db 10010010b
+0106 82               27            db 10000010b
+0107 F8               28            db 11111000b
+0108 80               29            db 10000000b
+0109 90               30            db 10010000b
+                      31    
+                      32    END
+
+VERSION 1.2k ASSEMBLY COMPLETE, 0 ERRORS FOUND
+PROG5                                                                                                         PAGE 2
+
+IND. . . . . . . . . . . . . . .  C ADDR  0022H  
+IND1 . . . . . . . . . . . . . .  C ADDR  0029H  
+P2 . . . . . . . . . . . . . . .  D ADDR  00A0H  PREDEFINED  
+ZG . . . . . . . . . . . . . . .  C ADDR  0100H  
