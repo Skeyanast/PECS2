@@ -1,0 +1,99 @@
+MAIN                                                                                                          PAGE 1
+
+                       1    $MOD52
+                       2    
+  006D                 3    T_RELOAD_H EQU 06Dh
+  0084                 4    T_RELOAD_L EQU 084h
+  493E                 5    TMPCNT_VAL EQU 493Eh
+                       6    
+  0030                 7    CNT       DATA 30h
+  0032                 8    TMPCNT    DATA 32h
+                       9    
+002B                  10    ORG 002Bh
+002B 02011B           11        LJMP T2_INT_HANDLER
+                      12    
+0100                  13    ORG 0100h
+0100                  14    MAIN:
+0100 75323E           15        MOV TMPCNT, #3Eh
+0103 753349           16        MOV TMPCNT+1, #49h
+                      17        
+0106 5390FE           18        ANL P1, #0FEh
+                      19        
+0109 75CB6D           20        MOV RCAP2H, #T_RELOAD_H
+010C 75CA84           21        MOV RCAP2L, #T_RELOAD_L
+                      22        
+010F 75C800           23        MOV T2CON, #00h
+0112 43C804           24        ORL T2CON, #04h
+                      25        
+0115 D2AD             26        SETB ET2
+0117 D2AF             27        SETB EA
+                      28        
+0119                  29    LOOP:
+0119 80FE             30        SJMP LOOP
+                      31    
+011B                  32    T2_INT_HANDLER:
+011B C2CF             33        CLR TF2
+011D D290             34        SETB P1.0
+                      35        
+011F 853230           36        MOV CNT, TMPCNT
+0122 853331           37        MOV CNT+1, TMPCNT+1
+                      38        
+0125                  39    DELAY_ON:
+0125 E530             40        MOV A, CNT
+0127 7009             41        JNZ DEC_ON
+0129 E531             42        MOV A, CNT+1
+012B 6009             43        JZ TURN_OFF
+012D 1531             44        DEC CNT+1
+012F 7530FF           45        MOV CNT, #0FFh
+0132                  46    DEC_ON:
+0132 1530             47        DEC CNT
+0134 80EF             48        SJMP DELAY_ON
+                      49    
+0136                  50    TURN_OFF:
+0136 C290             51        CLR P1.0
+                      52        
+0138 853230           53        MOV CNT, TMPCNT
+013B 853331           54        MOV CNT+1, TMPCNT+1
+                      55        
+013E                  56    DELAY_OFF:
+013E E530             57        MOV A, CNT
+0140 7009             58        JNZ DEC_OFF
+MAIN                                                                                                          PAGE 2
+
+0142 E531             59        MOV A, CNT+1
+0144 6009             60        JZ END_DELAY
+0146 1531             61        DEC CNT+1
+0148 7530FF           62        MOV CNT, #0FFh
+014B                  63    DEC_OFF:
+014B 1530             64        DEC CNT
+014D 80EF             65        SJMP DELAY_OFF
+                      66    
+014F                  67    END_DELAY:
+014F 32               68        RETI
+                      69    
+                      70    END
+
+VERSION 1.2k ASSEMBLY COMPLETE, 0 ERRORS FOUND
+MAIN                                                                                                          PAGE 3
+
+CNT. . . . . . . . . . . . . . .  D ADDR  0030H  
+DEC_OFF. . . . . . . . . . . . .  C ADDR  014BH  
+DEC_ON . . . . . . . . . . . . .  C ADDR  0132H  
+DELAY_OFF. . . . . . . . . . . .  C ADDR  013EH  
+DELAY_ON . . . . . . . . . . . .  C ADDR  0125H  
+EA . . . . . . . . . . . . . . .  B ADDR  00AFH  PREDEFINED  
+END_DELAY. . . . . . . . . . . .  C ADDR  014FH  
+ET2. . . . . . . . . . . . . . .  B ADDR  00ADH  PREDEFINED  
+LOOP . . . . . . . . . . . . . .  C ADDR  0119H  
+MAIN . . . . . . . . . . . . . .  C ADDR  0100H  NOT USED  
+P1 . . . . . . . . . . . . . . .  D ADDR  0090H  PREDEFINED  
+RCAP2H . . . . . . . . . . . . .  D ADDR  00CBH  PREDEFINED  
+RCAP2L . . . . . . . . . . . . .  D ADDR  00CAH  PREDEFINED  
+T2CON. . . . . . . . . . . . . .  D ADDR  00C8H  PREDEFINED  
+T2_INT_HANDLER . . . . . . . . .  C ADDR  011BH  
+TF2. . . . . . . . . . . . . . .  B ADDR  00CFH  PREDEFINED  
+TMPCNT . . . . . . . . . . . . .  D ADDR  0032H  
+TMPCNT_VAL . . . . . . . . . . .    NUMB  493EH  NOT USED  
+TURN_OFF . . . . . . . . . . . .  C ADDR  0136H  
+T_RELOAD_H . . . . . . . . . . .    NUMB  006DH  
+T_RELOAD_L . . . . . . . . . . .    NUMB  0084H  

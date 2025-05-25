@@ -1,0 +1,70 @@
+$MOD52
+
+T_RELOAD_H EQU 06Dh
+T_RELOAD_L EQU 084h
+TMPCNT_VAL EQU 493Eh
+
+CNT       DATA 30h
+TMPCNT    DATA 32h
+
+ORG 002Bh
+    LJMP T2_INT_HANDLER
+
+ORG 0100h
+MAIN:
+    MOV TMPCNT, #3Eh
+    MOV TMPCNT+1, #49h
+    
+    ANL P1, #0FEh
+    
+    MOV RCAP2H, #T_RELOAD_H
+    MOV RCAP2L, #T_RELOAD_L
+    
+    MOV T2CON, #00h
+    ORL T2CON, #04h
+    
+    SETB ET2
+    SETB EA
+    
+LOOP:
+    SJMP LOOP
+
+T2_INT_HANDLER:
+    CLR TF2
+    SETB P1.0
+    
+    MOV CNT, TMPCNT
+    MOV CNT+1, TMPCNT+1
+    
+DELAY_ON:
+    MOV A, CNT
+    JNZ DEC_ON
+    MOV A, CNT+1
+    JZ TURN_OFF
+    DEC CNT+1
+    MOV CNT, #0FFh
+DEC_ON:
+    DEC CNT
+    SJMP DELAY_ON
+
+TURN_OFF:
+    CLR P1.0
+    
+    MOV CNT, TMPCNT
+    MOV CNT+1, TMPCNT+1
+    
+DELAY_OFF:
+    MOV A, CNT
+    JNZ DEC_OFF
+    MOV A, CNT+1
+    JZ END_DELAY
+    DEC CNT+1
+    MOV CNT, #0FFh
+DEC_OFF:
+    DEC CNT
+    SJMP DELAY_OFF
+
+END_DELAY:
+    RETI
+
+END
