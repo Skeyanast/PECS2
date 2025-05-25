@@ -1,0 +1,42 @@
+MAIN                                                                                                          PAGE 1
+
+                       1    $MOD51
+                       2    
+  0030                 3    VAL_LOW  DATA 30h
+  0031                 4    VAL_HIGH DATA 31h
+                       5    
+0000                   6    ORG 0000h
+0000 020030            7        LJMP MAIN
+                       8    
+0030                   9    ORG 0030h
+0030                  10    MAIN:
+0030 7590FF           11        MOV P1, #0FFh
+0033 75B0FF           12        MOV P3, #0FFh
+0036 758000           13        MOV P0, #00h
+0039 75A000           14        MOV P2, #00h
+                      15        
+003C C2B6             16        CLR P3.6
+003E D2B6             17        SETB P3.6
+                      18        
+0040 859030           19        MOV VAL_LOW, P1
+0043 85B031           20        MOV VAL_HIGH, P3
+                      21        
+0046 853080           22        MOV P0, VAL_LOW
+0049 8531A0           23        MOV P2, VAL_HIGH
+                      24        
+004C                  25    LOOP:
+004C 80FE             26        SJMP LOOP
+                      27        
+                      28    END
+
+VERSION 1.2k ASSEMBLY COMPLETE, 0 ERRORS FOUND
+MAIN                                                                                                          PAGE 2
+
+LOOP . . . . . . . . . . . . . .  C ADDR  004CH  
+MAIN . . . . . . . . . . . . . .  C ADDR  0030H  
+P0 . . . . . . . . . . . . . . .  D ADDR  0080H  PREDEFINED  
+P1 . . . . . . . . . . . . . . .  D ADDR  0090H  PREDEFINED  
+P2 . . . . . . . . . . . . . . .  D ADDR  00A0H  PREDEFINED  
+P3 . . . . . . . . . . . . . . .  D ADDR  00B0H  PREDEFINED  
+VAL_HIGH . . . . . . . . . . . .  D ADDR  0031H  
+VAL_LOW. . . . . . . . . . . . .  D ADDR  0030H  
